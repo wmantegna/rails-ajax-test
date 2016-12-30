@@ -1,0 +1,36 @@
+<h1>AJAX Search Page</h1>
+<p>
+  Based on: <a href="http://stackoverflow.com/questions/34618270/ruby-on-rails-how-to-retrieve-data-from-database-on-ajax-request">http://stackoverflow.com/questions/34618270/ruby-on-rails-how-to-retrieve-data-from-database-on-ajax-request</a>
+</p>
+Search: <input id="search" type="text">
+<ul id="searchResults">
+</ul>
+<div id="answer"></div>
+
+<script>
+  $('#search').keyup(function(){
+  var q = $(this).val();
+  console.log('q='+q);
+    $.ajax({
+      type: "GET",
+      url: "/categories/search",
+      dataType: "json",
+      data: {'keyword': q},
+      success:function(result){
+        console.log(result);
+        
+        $("#searchResults").children().remove();
+        
+        console.log(result);
+        for (term in result){
+          $('#searchResults').append('<li><b>' + result[term].id + '</b>: ' + result[term].name + '</li>')
+        }
+      }
+    })
+  });
+
+  $(function(){
+    // instantiate search
+    $('#search').keyup();
+  });
+</script>
